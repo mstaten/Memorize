@@ -40,37 +40,38 @@ enum ThemeType: String, CaseIterable {
         }
     }
     
-    var groupImage: String {
+    var symbol: String {
         switch self {
-        case .halloween: return "🎃"
-        case .flowers: return "🌸"
-        case .green: return "💚"
+        case .halloween: return "theatermasks.fill"
+        case .flowers: return "tree.fill"
+        case .green: return "drop.circle.fill"
         }
     }
 }
 
 struct ContentView: View {
+    
+    // this state should probably be initialized differently, so that we can be sure
+    // the same default theme is used for both variables
     @State var theme: ThemeType = .green
-    @State var emojis = ThemeType.green.emojis.shuffled()
-    @State var cardCount: Int = 4
+    @State var emojis: [String] = ThemeType.green.emojis.shuffled()
     
     var themes: [ThemeType] = ThemeType.allCases
     
     var body: some View {
         VStack {
             Text("Memorize!").font(.largeTitle).fontWeight(.bold)
-            themePicker
             ScrollView {
                 cards
             }
-            cardCountAdjusters
+            themePicker
         }
         .padding()
     }
     
     var cards: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 120))]) {
-            ForEach(0..<cardCount, id: \.self) {index in
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 60))]) {
+            ForEach(emojis.indices, id: \.self) {index in
                 CardView(content: emojis[index])
                     .aspectRatio(2/3, contentMode: .fit)
             }
@@ -79,55 +80,28 @@ struct ContentView: View {
     }
     
     var themePicker: some View {
-        HStack {
+        HStack(spacing: 40) {
             ForEach(themes.indices, id: \.self) { index in
                 Button(action: {
                     theme = themes[index]
                     emojis = theme.emojis.shuffled()
-                    if cardCount > emojis.count {
-                        cardCount = emojis.count
-                    }
                 }, label: {
                     VStack {
-                        Text(themes[index].groupImage)
-                        Text(themes[index].name).font(.headline)
+                        Image(systemName: themes[index].symbol)
+                            .imageScale(.large)
+                            .font(.title2)
+                        Text(themes[index].name).font(.body)
                     }
                 })
             }
         }
-    }
-    
-    var cardCountAdjusters: some View {
-        HStack {
-            cardRemover
-            Spacer()
-            cardAdder
-        }
-        .imageScale(.large)
-        .font(.largeTitle)
-    }
-    
-    func cardCountAdjuster(by offset: Int, symbol: String) -> some View {
-        Button(action: {
-            cardCount += offset
-        }, label: {
-            Image(systemName: symbol)
-        })
-        .disabled(cardCount + offset < 1 || cardCount + offset > theme.emojis.count)
-    }
-    
-    var cardRemover: some View {
-        cardCountAdjuster(by: -1, symbol: "minus.circle")
-    }
-    
-    var cardAdder: some View {
-        cardCountAdjuster(by: +1, symbol: "plus.circle")
+        .padding(.top)
     }
 }
 
 struct CardView: View {
     let content: String
-    @State var isFaceUp: Bool = true
+    @State var isFaceUp: Bool = false
     
     var body: some View {
         let base: RoundedRectangle = .init(cornerRadius: 12)
