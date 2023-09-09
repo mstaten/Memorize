@@ -54,24 +54,26 @@ struct ContentView: View {
     // this state should probably be initialized differently, so that we can be sure
     // the same default theme is used for both variables
     @State var theme: ThemeType = .green
-    @State var emojis: [String] = ThemeType.green.emojis.shuffled()
+    @State var cardCount: Int = ThemeType.green.emojis.count
     
     var themes: [ThemeType] = ThemeType.allCases
     
     var body: some View {
         VStack {
             Text("Memorize!").font(.largeTitle).fontWeight(.bold)
+                .padding(.top, 16)
             ScrollView {
                 cards
             }
             themePicker
         }
-        .padding()
+        .padding(.horizontal, 16)
     }
     
     var cards: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 60))]) {
-            ForEach(emojis.indices, id: \.self) {index in
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: cardWidth))], spacing: 15) {
+            let emojis: [String] = Array(theme.emojis[..<cardCount]).shuffled()
+            ForEach(emojis.indices, id: \.self) { index in
                 CardView(content: emojis[index])
                     .aspectRatio(2/3, contentMode: .fit)
             }
@@ -79,12 +81,29 @@ struct ContentView: View {
         .foregroundColor(theme.cardColor)
     }
     
+    var cardWidth: CGFloat {
+        if cardCount == 4 {
+            return 120
+        }
+        else if cardCount <= 9 {
+            return 100
+        }
+        else if cardCount <= 16 {
+            return 80
+        } else {
+            return 65
+        }
+    }
+    
     var themePicker: some View {
-        HStack(spacing: 40) {
+        HStack(alignment: .bottom, spacing: 40) {
             ForEach(themes.indices, id: \.self) { index in
                 Button(action: {
                     theme = themes[index]
-                    emojis = theme.emojis.shuffled()
+
+                    // choose a random number of pairs
+                    let pairsToUse: Int = .random(in: 2...(theme.emojis.count / 2))
+                    cardCount = pairsToUse * 2
                 }, label: {
                     VStack {
                         Image(systemName: themes[index].symbol)
@@ -95,7 +114,7 @@ struct ContentView: View {
                 })
             }
         }
-        .padding(.top)
+        .padding(.top, 16)
     }
 }
 
