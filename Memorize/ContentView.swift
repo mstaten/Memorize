@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Foundation
 
 enum ThemeType: String, CaseIterable {
     case halloween, flowers, green
@@ -53,25 +54,27 @@ struct ContentView: View {
     
     // this state should probably be initialized differently, so that we can be sure
     // the same default theme is used for both variables
-    @State var theme: ThemeType = .green
-    @State var cardCount: Int = ThemeType.green.emojis.count
+    @State var theme: ThemeType = .halloween
+    @State var cardCount: Int = ThemeType.halloween.emojis.count
     
     var themes: [ThemeType] = ThemeType.allCases
+    
+    let VIEW_PADDING: CGFloat = 16
+    let CARD_SPACING: CGFloat = 8
     
     var body: some View {
         VStack {
             Text("Memorize!").font(.largeTitle).fontWeight(.bold)
-                .padding(.top, 16)
             ScrollView {
                 cards
             }
             themePicker
         }
-        .padding(.horizontal, 16)
+        .padding(VIEW_PADDING)
     }
     
     var cards: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: cardWidth))], spacing: 15) {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: cardWidth))], spacing: CARD_SPACING) {
             let emojis: [String] = Array(theme.emojis[..<cardCount]).shuffled()
             ForEach(emojis.indices, id: \.self) { index in
                 CardView(content: emojis[index])
@@ -81,18 +84,28 @@ struct ContentView: View {
         .foregroundColor(theme.cardColor)
     }
     
+    /**
+     magic = w - (h * x) - ((x - 1) * y ) / columns
+     let magic = (DEVICE_WIDTH - (VIEW_PADDING * columns) - ((columns - 1) * CARD_SPACING)) / columns
+        else if cardCount <= 9 {  columns = 3
+        else if cardCount <= 16 {  columns = 4
+        } else {  columns = 5
+     */
+    // optimized for portrait mode
     var cardWidth: CGFloat {
-        if cardCount == 4 {
-            return 120
+        var columns: CGFloat = 5 // max number of columns
+        
+        if cardCount <= Int(columns * columns) {
+            let root = sqrt(Double(cardCount))
+            columns = CGFloat(ceil(root))
         }
-        else if cardCount <= 9 {
-            return 100
-        }
-        else if cardCount <= 16 {
-            return 80
-        } else {
-            return 65
-        }
+        
+        let spacingOutsideView = VIEW_PADDING * columns
+        let spacingBetweenCards = CARD_SPACING * (columns - 1)
+        let width = (DEVICE_WIDTH - spacingOutsideView - spacingBetweenCards) / columns
+
+        print("\(cardCount) cards in \(columns) columns, in portrait mode")
+        return width
     }
     
     var themePicker: some View {
@@ -114,7 +127,6 @@ struct ContentView: View {
                 })
             }
         }
-        .padding(.top, 16)
     }
 }
 
