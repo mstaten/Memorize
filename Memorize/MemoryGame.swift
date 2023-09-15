@@ -10,7 +10,7 @@ import Foundation
 // Model
 
 // CardContent is a "don't-care" - could be any type, a string, emojis, jpeg image,
-// could even be a UI component
+// could even be a UI component. Now it needs to be equatable too.
 
 struct MemoryGame<CardContent> where CardContent: Equatable {
     
@@ -20,28 +20,8 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     private(set) var cards: [Card]
     
     var indexOfOneAndOnlyFaceUpCard: Int? {
-        get {
-            var faceUpCardIndices: [Int] = []
-            for index in cards.indices {
-                if cards[index].isFaceUp {
-                    faceUpCardIndices.append(index)
-                }
-            }
-            if faceUpCardIndices.count == 1 {
-                return faceUpCardIndices.first
-            } else {
-                return nil
-            }
-        }
-        set {
-            for index in cards.indices {
-                if index == newValue {
-                    cards[index].isFaceUp = true
-                } else {
-                    cards[index].isFaceUp = false
-                }
-            }
-        }
+        get { cards.indices.filter  { cards[$0].isFaceUp }.only }
+        set { cards.indices.forEach { cards[$0].isFaceUp = (newValue == $0) } }
     }
     
     init(cards: [Card]) {
@@ -60,9 +40,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     
     /// Rules:
     /// if you click a facedown card that's not matched, do something.
-    /// 
     mutating func choose(_ card: Card) {
-        print("chose \(card)")
         if let chosenIndex: Int = cards.firstIndex(where: { $0.id == card.id }) {
             
             // only if you click a facedown card that's not matched
@@ -73,7 +51,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                         cards[potentialMatchIndex].isMatched = true
                     }
                 } else {
-                    // if indexOfOneAndOnlyFaceUpCard is nil, we'll turn all cards face down
+                    // turn all cards face down
                     for index in cards.indices {
                         cards[index].isFaceUp = false
                     }
