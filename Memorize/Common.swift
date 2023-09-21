@@ -16,3 +16,10 @@ extension Array {
         self.count == 1 ? self.first : nil
     }
 }
+
+//struct MemoryGame<CardContent> where CardContent: Equatable {
+//extension Array where Element: Identifiable {
+//    func whereIdMatches(id: ObjectIdentifier) -> Int? {
+//        return firstIndex(where: { $0.id == id })
+//    }
+//}

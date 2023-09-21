@@ -41,6 +41,8 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
             
             // if you click a facedown card that's not matched
             if !cards[chosenIndex].isFaceUp && !cards[chosenIndex].isMatched {
+                
+                // if there's only one faceup card
                 if let potentialMatchIndex = indexOfOneAndOnlyFaceUpCard {
                     
                     // if the cards match
@@ -48,11 +50,23 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                         cards[chosenIndex].isMatched = true
                         cards[potentialMatchIndex].isMatched = true
                         score += 2
+                        print("\(cards[chosenIndex].content) matched")
+                        print("score: \(score)")
                     }
                 } else {
-                    // TODO: deduct some points
                     // turn all cards face down
                     for index in cards.indices {
+                        
+                        if cards[index].isFaceUp == true {
+                            // if a card has been seen and it's not yet matched, subtract a point
+                            if cards[index].wasSeen == true && !cards[index].isMatched {
+                                score -= 1
+                                print("\(cards[index].content) was already seen")
+                                print("score: \(score)")
+                            }
+                            // if a card is face up, note that it's been seen
+                            cards[index].wasSeen = true
+                        }
                         cards[index].isFaceUp = false
                     }
                 }

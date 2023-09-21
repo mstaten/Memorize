@@ -21,7 +21,7 @@ struct EmojiMemoryGameView: View {
         VStack {
             Text("\(viewModel.theme.name)")
                 .font(.title).bold()
-                .foregroundColor(viewModel.theme.color)
+                .foregroundColor(viewModel.color)
             
             ScrollView {
                 cards
@@ -51,7 +51,7 @@ struct EmojiMemoryGameView: View {
                     }
             }
         }
-        .foregroundColor(viewModel.theme.color)
+        .foregroundColor(viewModel.color)
     }
 }
 

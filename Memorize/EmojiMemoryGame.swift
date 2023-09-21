@@ -27,6 +27,30 @@ class EmojiMemoryGame: ObservableObject {
         return model.score
     }
     
+    
+    // Extra Credit #1
+    // If a Theme specifies a color that we can't handle directly, use default case
+    var color: Color {
+        switch self.theme.color {
+        case "red":     return Color.red
+        case "orange":  return Color.orange
+        case "yellow":  return Color.yellow
+        case "green":   return Color.green
+        case "mint":    return Color.mint
+        case "teal":    return Color.teal
+        case "cyan":    return Color.cyan
+        case "blue":    return Color.blue
+        case "indigo":  return Color.indigo
+        case "purple":  return Color.purple
+        case "pink":    return Color.pink
+        case "brown":   return Color.brown
+        case "white":   return Color.white
+        case "gray":    return Color.gray
+        case "black":   return Color.black
+        default:        return Color.black
+        }
+    }
+    
     init() {
         // set up all themes
         var themes: [Theme] = []
@@ -36,7 +60,7 @@ class EmojiMemoryGame: ObservableObject {
         
         // Task #8: need to be able to add a new theme with a single line of code
         themes.append(
-            Theme(name: "Red", emojis: ["❣️", "🍓", "🍄", "🖍️"], color: .red, numberOfPairs: 4)
+            Theme(name: "Red", emojis: ["❣️", "🍓", "🍄", "🖍️"], color: "red", numberOfPairs: 4)
         )
         self.themes = themes
         
@@ -57,10 +81,16 @@ class EmojiMemoryGame: ObservableObject {
         // Task #7, #9: randomize which emojis are used, and shuffle their order
         let emojis = theme.emojis.shuffled()
         
-        return MemoryGame(numberOfPairsOfCards: theme.numberOfPairs) { pairIndex in
+        // Extra Credit #1
+        // show minimum of 2 pairs
+        let numberOfPairs = max(2, theme.numberOfPairs)
+        
+        return MemoryGame(numberOfPairsOfCards: numberOfPairs) { pairIndex in
             if emojis.indices.contains(pairIndex) {
                 return emojis[pairIndex]
             } else {
+                // Extra Credit #1
+                // don't try to show more pairs than the theme has emoji to represent
                 return "⛔︎"
             }
         }

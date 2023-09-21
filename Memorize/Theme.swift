@@ -27,14 +27,13 @@ enum DefaultTheme: String, CaseIterable {
         }
     }
     
-    var color: Color {
+    var color: String {
         switch self {
-        case .halloween: return .orange
-        case .flowers: return .pink
-        case .green: return .green
-        case .activities: return .blue
-        case .moonPhases: return .black
-        case .flags: return .black
+        case .halloween:    return "orange"
+        case .flowers:      return "pink"
+        case .green:        return "green"
+        case .activities:   return "blue"
+        default:            return "black"
         }
     }
     
@@ -54,10 +53,10 @@ enum DefaultTheme: String, CaseIterable {
 struct Theme {
     var name: String
     var emojis: [String]
-    var color: Color
+    var color: String
     var numberOfPairs: Int
     
-    init(name: String, emojis: [String], color: Color, numberOfPairs: Int) {
+    init(name: String, emojis: [String], color: String, numberOfPairs: Int) {
         self.name = name
         self.emojis = emojis
         self.color = color
