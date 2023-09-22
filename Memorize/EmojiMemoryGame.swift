@@ -27,7 +27,6 @@ class EmojiMemoryGame: ObservableObject {
         return model.score
     }
     
-    
     // Extra Credit #1
     // If a Theme specifies a color that we can't handle directly, use default case
     var color: Color {
@@ -49,6 +48,12 @@ class EmojiMemoryGame: ObservableObject {
         case "black":   return Color.black
         default:        return Color.black
         }
+    }
+    
+    // Extra Credit #3
+    // Support a gradient as a color, kind of
+    var gradient: Bool {
+        return self.theme.color == "gradient"
     }
     
     init() {
@@ -83,7 +88,16 @@ class EmojiMemoryGame: ObservableObject {
         
         // Extra Credit #1
         // show minimum of 2 pairs
-        let numberOfPairs = max(2, theme.numberOfPairs)
+        
+        // Extra Credit #2
+        // If theme doesn't have a fixed number of pairs to show,
+        // generate a random number that changes with every New Game
+        let numberOfPairs: Int
+        if theme.numberOfPairs != nil {
+            numberOfPairs = max(2, theme.numberOfPairs!)
+        } else {
+            numberOfPairs = max(2,.random(in: 2...emojis.count))
+        }
         
         return MemoryGame(numberOfPairsOfCards: numberOfPairs) { pairIndex in
             if emojis.indices.contains(pairIndex) {

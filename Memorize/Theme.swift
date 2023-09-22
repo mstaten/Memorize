@@ -33,18 +33,25 @@ enum DefaultTheme: String, CaseIterable {
         case .flowers:      return "pink"
         case .green:        return "green"
         case .activities:   return "blue"
-        default:            return "black"
+        default:            return "gradient"
         }
     }
     
     var name: String {
         switch self {
-        case .halloween: return "Halloween"
-        case .flowers: return "Flowers"
-        case .green: return "Green"
-        case .activities: return "Activities"
-        case .moonPhases: return "Moon Phases"
-        case .flags: return "Flags"
+        case .halloween:    return "Halloween"
+        case .flowers:      return "Flowers"
+        case .green:        return "Green"
+        case .activities:   return "Activities"
+        case .moonPhases:   return "Moon Phases"
+        case .flags:        return "Flags"
+        }
+    }
+    
+    var numberOfPairs: Int? {
+        switch self {
+        case .activities:   return 4
+        default:            return nil
         }
     }
 }
@@ -54,9 +61,12 @@ struct Theme {
     var name: String
     var emojis: [String]
     var color: String
-    var numberOfPairs: Int
     
-    init(name: String, emojis: [String], color: String, numberOfPairs: Int) {
+    // Extra Credit #2
+    // whether the Theme shows a fixed number of cards or a random number of cards
+    var numberOfPairs: Int?
+      
+    init(name: String, emojis: [String], color: String, numberOfPairs: Int? = nil) {
         self.name = name
         self.emojis = emojis
         self.color = color
@@ -67,9 +77,13 @@ struct Theme {
         self.name = defaultTheme.name
         self.emojis = defaultTheme.emojis
         self.color = defaultTheme.color
-        self.numberOfPairs = .random(in: 2...emojis.count)
+        self.numberOfPairs = defaultTheme.numberOfPairs
         
         print(name)
-        print(numberOfPairs)
+        if let numberOfPairs = defaultTheme.numberOfPairs {
+            print(numberOfPairs)
+        } else {
+            print("random number of pairs")
+        }
     }
 }

@@ -43,7 +43,7 @@ struct EmojiMemoryGameView: View {
     var cards: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)], spacing: 0) {
             ForEach(viewModel.cards) { card in
-                CardView(card)
+                CardView(card, themeColor: viewModel.color, gradient: viewModel.gradient)
                     .aspectRatio(2/3, contentMode: .fit)
                     .padding(4)
                     .onTapGesture {
@@ -57,17 +57,33 @@ struct EmojiMemoryGameView: View {
 
 struct CardView: View {
     let card: MemoryGame<String>.Card
+    let themeColor: Color
+    let gradient: Bool
     
-    init(_ card: MemoryGame<String>.Card) {
+    init(_ card: MemoryGame<String>.Card, themeColor: Color, gradient: Bool) {
         self.card = card
+        self.themeColor = themeColor
+        self.gradient = gradient
     }
     
     var body: some View {
         let base: RoundedRectangle = .init(cornerRadius: 12)
+        
+        let linearGradient: LinearGradient = .init(
+            colors: [.cyan, themeColor],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+        
         ZStack {
             Group {
                 base.fill(.white)
+                
+                base.strokeBorder(linearGradient, lineWidth: 2)
+                    .opacity(gradient ? 1 : 0)
                 base.strokeBorder(lineWidth: 2)
+                    .opacity(gradient ? 0 : 1)
+                
                 Text(card.content)
                     .font(.system(size: 200))
                     .minimumScaleFactor(0.01)
@@ -75,7 +91,10 @@ struct CardView: View {
             }
             .opacity(card.isFaceUp ? 1 : 0)
             
-            base.fill().opacity(card.isFaceUp ? 0 : 1)
+            base.fill(linearGradient)
+                .opacity(card.isFaceUp ? 0 : (gradient ? 1 : 0))
+            base.fill()
+                .opacity(card.isFaceUp || gradient ? 0 : 1)
         }
         .opacity(card.isFaceUp || !card.isMatched ? 1 : 0)
     }
