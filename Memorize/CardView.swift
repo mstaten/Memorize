@@ -32,8 +32,21 @@ struct CardView: View {
                     .padding(Constants.Pie.inset)
             )
             .padding(Constants.inset)
-            .cardify(isFaceUp: card.isFaceUp, themeColor: themeColor, gradient: gradient)
+            .cardify(shapeStyle: shapeStyle(), isFaceUp: card.isFaceUp)
             .opacity(card.isFaceUp || !card.isMatched ? 1 : 0)
+    }
+    
+    private func shapeStyle() -> AnyShapeStyle {
+        if gradient {
+            let linearGradient: LinearGradient = .init(
+                colors: [.cyan, themeColor],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            return AnyShapeStyle(linearGradient)
+        } else {
+            return AnyShapeStyle(themeColor)
+        }
     }
     
     private struct Constants {
