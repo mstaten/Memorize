@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		32046A182AC4D492005A34DF /* AspectVGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32046A172AC4D492005A34DF /* AspectVGrid.swift */; };
 		322A8AD22ABB5A9B004555C3 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322A8AD12ABB5A9B004555C3 /* Theme.swift */; };
 		323A857A2AABEE4200AE352B /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323A85792AABEE4100AE352B /* Common.swift */; };
+		325F916A2AD602C100EC2F11 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325F91692AD602C100EC2F11 /* CardView.swift */; };
+		325F916C2AD70B3100EC2F11 /* Pie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325F916B2AD70B3100EC2F11 /* Pie.swift */; };
 		328EADB92AB0CA2A00AA72B3 /* MemoryGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328EADB82AB0CA2A00AA72B3 /* MemoryGame.swift */; };
 		328EADBB2AB0CB5500AA72B3 /* EmojiMemoryGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328EADBA2AB0CB5500AA72B3 /* EmojiMemoryGame.swift */; };
 		32E07BBA2A8BD9CE005F6EB2 /* MemorizeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E07BB92A8BD9CE005F6EB2 /* MemorizeApp.swift */; };
@@ -18,8 +21,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		32046A172AC4D492005A34DF /* AspectVGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectVGrid.swift; sourceTree = "<group>"; };
 		322A8AD12ABB5A9B004555C3 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		323A85792AABEE4100AE352B /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
+		325F91692AD602C100EC2F11 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		325F916B2AD70B3100EC2F11 /* Pie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pie.swift; sourceTree = "<group>"; };
 		328EADB82AB0CA2A00AA72B3 /* MemoryGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryGame.swift; sourceTree = "<group>"; };
 		328EADBA2AB0CB5500AA72B3 /* EmojiMemoryGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMemoryGame.swift; sourceTree = "<group>"; };
 		32E07BB62A8BD9CE005F6EB2 /* Memorize.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Memorize.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -63,10 +69,13 @@
 				328EADB82AB0CA2A00AA72B3 /* MemoryGame.swift */,
 				328EADBA2AB0CB5500AA72B3 /* EmojiMemoryGame.swift */,
 				32E07BBB2A8BD9CE005F6EB2 /* EmojiMemoryGameView.swift */,
+				32046A172AC4D492005A34DF /* AspectVGrid.swift */,
 				322A8AD12ABB5A9B004555C3 /* Theme.swift */,
 				323A85792AABEE4100AE352B /* Common.swift */,
 				32E07BBD2A8BD9D1005F6EB2 /* Assets.xcassets */,
 				32E07BBF2A8BD9D1005F6EB2 /* Preview Content */,
+				325F91692AD602C100EC2F11 /* CardView.swift */,
+				325F916B2AD70B3100EC2F11 /* Pie.swift */,
 			);
 			path = Memorize;
 			sourceTree = "<group>";
@@ -150,10 +159,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				32E07BBC2A8BD9CE005F6EB2 /* EmojiMemoryGameView.swift in Sources */,
+				32046A182AC4D492005A34DF /* AspectVGrid.swift in Sources */,
 				322A8AD22ABB5A9B004555C3 /* Theme.swift in Sources */,
+				325F916C2AD70B3100EC2F11 /* Pie.swift in Sources */,
 				323A857A2AABEE4200AE352B /* Common.swift in Sources */,
 				32E07BBA2A8BD9CE005F6EB2 /* MemorizeApp.swift in Sources */,
 				328EADB92AB0CA2A00AA72B3 /* MemoryGame.swift in Sources */,
+				325F916A2AD602C100EC2F11 /* CardView.swift in Sources */,
 				328EADBB2AB0CB5500AA72B3 /* EmojiMemoryGame.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -286,6 +298,7 @@
 				DEVELOPMENT_TEAM = 4XMTTAZ78K;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.card-games";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -315,6 +328,7 @@
 				DEVELOPMENT_TEAM = 4XMTTAZ78K;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.card-games";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

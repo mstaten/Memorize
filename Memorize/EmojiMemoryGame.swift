@@ -13,13 +13,15 @@ import SwiftUI
 
 class EmojiMemoryGame: ObservableObject {
     
+    typealias Card = MemoryGame<String>.Card
+    
     private var themes: [Theme]
     
     @Published var theme: Theme
     
     @Published private var model: MemoryGame<String>
     
-    var cards: [MemoryGame<String>.Card] {
+    var cards: [Card] {
         return model.cards
     }
     
@@ -117,7 +119,7 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     // intent function (the user's **intent** to choose a card)
-    func choose(_ card: MemoryGame<String>.Card) {
+    func choose(_ card: Card) {
         model.choose(card)
     }
 }

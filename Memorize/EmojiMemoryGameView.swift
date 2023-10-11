@@ -14,8 +14,7 @@ struct EmojiMemoryGameView: View {
     // apparently it shouldn't just be called viewModel, even though that is clearer for meeee
     @ObservedObject var viewModel: EmojiMemoryGame
     
-    let VIEW_PADDING: CGFloat = 16
-    let CARD_SPACING: CGFloat = 8
+    private let CARD_ASPECT_RATIO: CGFloat = 2/3
     
     var body: some View {
         VStack {
@@ -23,10 +22,9 @@ struct EmojiMemoryGameView: View {
                 .font(.title).bold()
                 .foregroundColor(viewModel.color)
             
-            ScrollView {
-                cards
-            }
-            .animation(.default, value: viewModel.cards)
+            cards
+                .foregroundColor(viewModel.color)
+                .animation(.default, value: viewModel.cards)
             
             Text("Score: \(viewModel.score)")
                 .font(.title).bold()
@@ -37,66 +35,21 @@ struct EmojiMemoryGameView: View {
                 viewModel.createNewGame()
             }.bold()
         }
-        .padding(VIEW_PADDING)
+        .padding(16)
     }
     
-    var cards: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)], spacing: 0) {
-            ForEach(viewModel.cards) { card in
+    @ViewBuilder
+    private var cards: some View {
+        AspectVGrid(viewModel.cards, aspectRatio: CARD_ASPECT_RATIO) { card in
+            VStack {
                 CardView(card, themeColor: viewModel.color, gradient: viewModel.gradient)
-                    .aspectRatio(2/3, contentMode: .fit)
                     .padding(4)
                     .onTapGesture {
                         viewModel.choose(card)
                     }
+//                Text(card.id)
             }
         }
-        .foregroundColor(viewModel.color)
-    }
-}
-
-struct CardView: View {
-    let card: MemoryGame<String>.Card
-    let themeColor: Color
-    let gradient: Bool
-    
-    init(_ card: MemoryGame<String>.Card, themeColor: Color, gradient: Bool) {
-        self.card = card
-        self.themeColor = themeColor
-        self.gradient = gradient
-    }
-    
-    var body: some View {
-        let base: RoundedRectangle = .init(cornerRadius: 12)
-        
-        let linearGradient: LinearGradient = .init(
-            colors: [.cyan, themeColor],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-        
-        ZStack {
-            Group {
-                base.fill(.white)
-                
-                base.strokeBorder(linearGradient, lineWidth: 2)
-                    .opacity(gradient ? 1 : 0)
-                base.strokeBorder(lineWidth: 2)
-                    .opacity(gradient ? 0 : 1)
-                
-                Text(card.content)
-                    .font(.system(size: 200))
-                    .minimumScaleFactor(0.01)
-                    .aspectRatio(1, contentMode: .fit)
-            }
-            .opacity(card.isFaceUp ? 1 : 0)
-            
-            base.fill(linearGradient)
-                .opacity(card.isFaceUp ? 0 : (gradient ? 1 : 0))
-            base.fill()
-                .opacity(card.isFaceUp || gradient ? 0 : 1)
-        }
-        .opacity(card.isFaceUp || !card.isMatched ? 1 : 0)
     }
 }
 
