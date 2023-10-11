@@ -21,48 +21,22 @@ struct CardView: View {
     }
     
     var body: some View {
-        let base: RoundedRectangle = .init(cornerRadius: Constants.cornerRadius)
-        
-        let linearGradient: LinearGradient = .init(
-            colors: [.cyan, themeColor],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-        
-        ZStack {
-            Group {
-                base.fill(.white)
-                
-                base.strokeBorder(linearGradient, lineWidth: Constants.lineWidth)
-                    .opacity(gradient ? 1 : 0)
-                base.strokeBorder(lineWidth: 2)
-                    .opacity(gradient ? 0 : 1)
-                
-                Pie(endAngle: .degrees(240))
-                    .opacity(Constants.Pie.opacity)
-                    .overlay(
-                        Text(card.content)
-                            .font(.system(size: Constants.FontSize.largest))
-                            .minimumScaleFactor(Constants.FontSize.scaleFactor)
-                            .multilineTextAlignment(.center)
-                            .aspectRatio(1, contentMode: .fit)
-                            .padding(Constants.Pie.inset)
-                    )
-                    .padding(Constants.inset)
-            }
-            .opacity(card.isFaceUp ? 1 : 0)
-            
-            base.fill(linearGradient)
-                .opacity(card.isFaceUp ? 0 : (gradient ? 1 : 0))
-            base.fill()
-                .opacity(card.isFaceUp || gradient ? 0 : 1)
-        }
-        .opacity(card.isFaceUp || !card.isMatched ? 1 : 0)
+        Pie(endAngle: .degrees(240))
+            .opacity(Constants.Pie.opacity)
+            .overlay(
+                Text(card.content)
+                    .font(.system(size: Constants.FontSize.largest))
+                    .minimumScaleFactor(Constants.FontSize.scaleFactor)
+                    .multilineTextAlignment(.center)
+                    .aspectRatio(1, contentMode: .fit)
+                    .padding(Constants.Pie.inset)
+            )
+            .padding(Constants.inset)
+            .cardify(isFaceUp: card.isFaceUp, themeColor: themeColor, gradient: gradient)
+            .opacity(card.isFaceUp || !card.isMatched ? 1 : 0)
     }
     
     private struct Constants {
-        static let cornerRadius: CGFloat = 12
-        static let lineWidth: CGFloat = 2
         static let inset: CGFloat = 8
         struct FontSize {
             static let largest: CGFloat = 200
