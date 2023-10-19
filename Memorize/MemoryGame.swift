@@ -50,8 +50,6 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                         cards[chosenIndex].isMatched = true
                         cards[potentialMatchIndex].isMatched = true
                         score += 2
-                        print("\(cards[chosenIndex].content) matched")
-                        print("score: \(score)")
                     }
                 } else {
                     // turn all cards face down
@@ -61,11 +59,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                             // if a card has been seen and it's not yet matched, subtract a point
                             if cards[index].wasSeen == true && !cards[index].isMatched {
                                 score -= 1
-                                print("\(cards[index].content) was already seen")
-                                print("score: \(score)")
                             }
-                            // if a card is face up, note that it's been seen
-                            cards[index].wasSeen = true
                         }
                         cards[index].isFaceUp = false
                     }
@@ -80,9 +74,15 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     }
     
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
-        var isFaceUp: Bool = false
+        var isFaceUp: Bool = false {
+            didSet {
+                if oldValue && !isFaceUp {
+                    wasSeen = true
+                }
+            }
+        }
         var isMatched: Bool = false
-        var wasSeen: Bool = false // TODO: implement
+        var wasSeen: Bool = false
         let content: CardContent
         
         var id: String

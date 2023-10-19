@@ -7,9 +7,22 @@
 
 import SwiftUI
 
-struct Cardify: ViewModifier {
+struct Cardify: ViewModifier, Animatable {
+    init(shapeStyle: AnyShapeStyle, isFaceUp: Bool) {
+        self.shapeStyle = shapeStyle
+        // setting rotation to 0 produces error "ignoring singular matrix: ProjectionTransform..."
+        self.rotation = isFaceUp ? .leastNonzeroMagnitude : 180
+    }
+    
     var shapeStyle: AnyShapeStyle
-    var isFaceUp: Bool
+    var isFaceUp: Bool {
+        rotation < 90
+    }
+    var rotation: Double
+    var animatableData: Double {
+        get { rotation }
+        set { rotation = newValue }
+    }
     
     func body(content: Content) -> some View {
         ZStack {
@@ -21,6 +34,7 @@ struct Cardify: ViewModifier {
             base.fill(shapeStyle)
                 .opacity(isFaceUp ? 0 : 1)
         }
+        .rotation3DEffect(.degrees(rotation), axis: (0,1,0))
     }
     
     private struct Constants {
