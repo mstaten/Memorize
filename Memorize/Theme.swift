@@ -78,12 +78,5 @@ struct Theme {
         self.emojis = defaultTheme.emojis
         self.color = defaultTheme.color
         self.numberOfPairs = defaultTheme.numberOfPairs
-        
-        print(name)
-        if let numberOfPairs = defaultTheme.numberOfPairs {
-            print(numberOfPairs)
-        } else {
-            print("random number of pairs")
-        }
     }
 }

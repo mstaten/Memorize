@@ -21,13 +21,8 @@ class EmojiMemoryGame: ObservableObject {
     
     @Published private var model: MemoryGame<String>
     
-    var cards: [Card] {
-        return model.cards
-    }
-    
-    var score: Int {
-        return model.score
-    }
+    var cards: [Card] { model.cards }
+    var score: Int { model.score }
     
     // Extra Credit #1
     // If a Theme specifies a color that we can't handle directly, use default case
