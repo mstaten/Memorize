@@ -20,6 +20,8 @@ struct EmojiMemoryGameView: View {
     // but this is safer, in case it changes, or some other reason
     @State private var lastScoreChange = (0, causedByCardId: "")
     
+    @State private var dealt: Set<Card.ID> = .init()
+    
     var body: some View {
         VStack {
             Text("\(viewModel.theme.name)")
@@ -27,10 +29,11 @@ struct EmojiMemoryGameView: View {
                 .foregroundColor(viewModel.color)
             
             cards
-                .foregroundColor(viewModel.color)
             
             HStack {
                 score
+                Spacer()
+                deck
                 Spacer()
                 newGame
             }
@@ -55,14 +58,20 @@ struct EmojiMemoryGameView: View {
     @ViewBuilder
     private var cards: some View {
         AspectVGrid(viewModel.cards, aspectRatio: Constants.cardAspectRatio) { card in
-            VStack {
-                CardView(card, themeColor: viewModel.color, gradient: viewModel.gradient)
+            if isDealt(card) {
+                view(for: card)
                     .padding(Constants.padding)
                     .overlay(FlyingNumber(number: scoreChange(causedBy: card)))
                     .zIndex(scoreChange(causedBy: card) != 0 ? 100 : 0)
                     .onTapGesture { choose(card) }
             }
         }
+    }
+    
+    private func view(for card: Card) -> some View {
+        CardView(card, themeColor: viewModel.color, gradient: viewModel.gradient)
+            .matchedGeometryEffect(id: card.id, in: dealingNamespace)
+            .transition(.asymmetric(insertion: .identity, removal: .identity))
     }
     
     private func choose(_ card: Card) {
@@ -74,16 +83,56 @@ struct EmojiMemoryGameView: View {
         }
     }
     
-    // tuple - which was the last card chosen, and what was the score change
     private func scoreChange(causedBy card: Card) -> Int {
+        // what was the score change amount, and which was the last card chosen
         let (amount, id) = lastScoreChange
-        // compare the last score change's card to the given card
+        // compare the card ids
         return card.id == id ? amount : 0
+    }
+    
+    // MARK: - Dealing from a deck
+    
+    @Namespace private var dealingNamespace
+    
+    private func isDealt(_ card: Card) -> Bool {
+        dealt.contains(card.id)
+    }
+    
+    private var undealtCards: [Card] {
+        viewModel.cards.filter { !isDealt($0) }
+    }
+    
+    private var deck: some View {
+        ZStack {
+            ForEach(undealtCards) { card in
+                CardView(card, themeColor: viewModel.color, gradient: viewModel.gradient)
+                    .matchedGeometryEffect(id: card.id, in: dealingNamespace)
+                    .transition(.asymmetric(insertion: .identity, removal: .identity))
+            }
+        }
+        .frame(width: Constants.deckWidth, height: Constants.deckWidth / Constants.cardAspectRatio)
+        .onTapGesture {
+            deal()
+        }
+    }
+    
+    private func deal() {
+        var delay: TimeInterval = 0
+        for card in viewModel.cards {
+            withAnimation(Constants.dealAnimation.delay(delay)) {
+                _ = dealt.insert(card.id)
+            }
+            delay += Constants.dealInterval
+        }
     }
     
     private struct Constants {
         static var padding: CGFloat = 4
         static var cardAspectRatio: CGFloat = 2/3
+        static var deckWidth: CGFloat = 50
+        static var dealAnimation: Animation = .easeIn(duration: 0.5)
+        static var dealInterval: TimeInterval = 0.15
+        
     }
 }
 
