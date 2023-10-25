@@ -93,7 +93,7 @@ class EmojiMemoryGame: ObservableObject {
         if theme.numberOfPairs != nil {
             numberOfPairs = max(2, theme.numberOfPairs!)
         } else {
-            numberOfPairs = max(2,.random(in: 2...emojis.count))
+            numberOfPairs = max(2, .random(in: 2...emojis.count))
         }
         
         return MemoryGame(numberOfPairsOfCards: numberOfPairs) { pairIndex in

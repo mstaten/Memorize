@@ -41,45 +41,33 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         cards.shuffle()
     }
     
-    // we have to use the index to access the card, since this is a struct and not a class, I think
-    // if you click a facedown card that's not matched, calculate score based on matching cards and turn
-    // it face up
+    // we have to use the index to access & alter the card, since this is a struct and not a class, I think.
+    // if you click a facedown card that's not matched, calculate score based on whether cards match and
+    // turn it face up
     mutating func choose(_ card: Card) {
         if let chosenIndex: Int = cards.firstIndex(where: { $0.id == card.id }),
            !cards[chosenIndex].isFaceUp && !cards[chosenIndex].isMatched {
-            calculateScore(chosenIndex: chosenIndex)
+            if let potentialMatchIndex = indexOfOneAndOnlyFaceUpCard {
+                calculateScoreBasedOnMatchingCards(chosenIndex, potentialMatchIndex)
+            } else {
+                indexOfOneAndOnlyFaceUpCard = chosenIndex
+            }
             cards[chosenIndex].isFaceUp = true
         }
     }
     
-    // MARK: - Calulate Score
-    
-    // if there's only one faceup card, check whether the cards match and score accordingly.
-    // otherwise, turn all cards face down. While we do that, if a card has been seen and it's
-    // not yet matched, subtract a point.
-    
-    private mutating func calculateScore(chosenIndex: Int) {
-        if let potentialMatchIndex = indexOfOneAndOnlyFaceUpCard {
-            calculateScoreForMatchingCards(chosenIndex, potentialMatchIndex)
-        } else {
-            for index in cards.indices {
-                calculateScoreForNonMatchingCards(index: index)
-                cards[index].isFaceUp = false
-            }
-        }
-    }
-    
-    private mutating func calculateScoreForNonMatchingCards(index: Int) {
-        if cards[index].isFaceUp && cards[index].wasSeen && !cards[index].isMatched {
-            score -= 1
-        }
-    }
-    
-    private mutating func calculateScoreForMatchingCards(_ chosenIndex: Int, _ potentialMatchIndex: Int) {
+    private mutating func calculateScoreBasedOnMatchingCards(_ chosenIndex: Int, _ potentialMatchIndex: Int) {
         if cards[chosenIndex].content == cards[potentialMatchIndex].content {
             cards[chosenIndex].isMatched = true
             cards[potentialMatchIndex].isMatched = true
             score += 2 + cards[chosenIndex].bonus + cards[potentialMatchIndex].bonus
+        } else {
+            if cards[chosenIndex].wasSeen {
+                score -= 1
+            }
+            if cards[potentialMatchIndex].wasSeen {
+                score -= 1
+            }
         }
     }
     
@@ -116,7 +104,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         // MARK: - Bonus time
         // total amount of bonus time that user gets
         // can be 0 which would mean "no bonus available" for matching this card quickly
-        var bonusTimeLimit: Double = 10
+        var bonusTimeLimit: Double = 6
         
         // the bonus earned so far (one point for every second of the bonusTimeLimit that was not used)
         // this gets smaller and smaller the longer the card remains face up without being matched
