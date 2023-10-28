@@ -13,22 +13,23 @@ struct CardView: View {
     let card: Card
     let themeColor: Color
     let gradient: Bool
+    let isDiscarded: Bool
     
-    init(_ card: Card, themeColor: Color, gradient: Bool) {
+    init(_ card: Card, themeColor: Color, gradient: Bool, isDiscarded: Bool = false) {
         self.card = card
         self.themeColor = themeColor
         self.gradient = gradient
+        self.isDiscarded = isDiscarded
     }
     
     var body: some View {
         TimelineView(.animation) { timeline in
-            if card.isFaceUp || !card.isMatched {
+            if card.isFaceUp || !card.isMatched || isDiscarded {
                 Pie(endAngle: .degrees(card.bonusPercentRemaining * 360))
                     .opacity(Constants.Pie.opacity)
                     .overlay(cardContent.padding(Constants.Pie.inset))
                     .padding(Constants.inset)
                     .cardify(shapeStyle: shapeStyle(), isFaceUp: card.isFaceUp)
-                    .transition(.scale)
             } else {
                 Color.clear
             }
@@ -41,7 +42,7 @@ struct CardView: View {
             .minimumScaleFactor(Constants.FontSize.scaleFactor)
             .multilineTextAlignment(.center)
             .aspectRatio(1, contentMode: .fit)
-            .rotationEffect(.degrees(card.isMatched ? 360 : 0))
+            .rotationEffect(.degrees(card.isMatched && card.isFaceUp ? 360 : 0))
             .animation(.spin(duration: 0.5), value: card.isMatched)
     }
     

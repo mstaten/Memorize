@@ -21,25 +21,38 @@ struct EmojiMemoryGameView: View {
     @State private var lastScoreChange = (0, causedByCardId: "")
     
     @State private var dealt: Set<Card.ID> = .init()
+    @State private var discarded: Set<Card.ID> = .init()
+    
+    @Namespace private var dealingNamespace
+    @Namespace private var discardingNamespace
     
     var body: some View {
         VStack {
-            Text("\(viewModel.theme.name)")
-                .font(.title).bold()
-                .foregroundColor(viewModel.color)
+            header.padding(.horizontal, Constants.padding)
             
             cards
             
             HStack {
                 score
                 Spacer()
-                deck
-                Spacer()
                 newGame
             }
             .font(.title)
+            .padding(.horizontal, Constants.padding)
         }
         .padding()
+    }
+    
+    private var header: some View {
+        HStack {
+            discardPile
+            Spacer()
+            Text("\(viewModel.theme.name)")
+                .font(.title).bold()
+                .foregroundColor(viewModel.color)
+            Spacer()
+            deck
+        }
     }
     
     private var score: some View {
@@ -70,11 +83,17 @@ struct EmojiMemoryGameView: View {
     
     private func view(for card: Card) -> some View {
         CardView(card, themeColor: viewModel.color, gradient: viewModel.gradient)
-            .matchedGeometryEffect(id: card.id, in: dealingNamespace)
+            .matchedGeometryEffect(
+                id: card.id,
+                in: activeNamespace(for: card),
+                isSource: !card.isFaceUp && card.isMatched ? false : true
+            )
             .transition(.asymmetric(insertion: .identity, removal: .identity))
     }
     
     private func choose(_ card: Card) {
+        checkForDiscards()
+        
         withAnimation {
             let scoreBeforeChoosing = viewModel.score
             viewModel.choose(card)
@@ -92,20 +111,27 @@ struct EmojiMemoryGameView: View {
     
     // MARK: - Dealing from a deck
     
-    @Namespace private var dealingNamespace
-    
     private func isDealt(_ card: Card) -> Bool {
         dealt.contains(card.id)
     }
+    private func isDiscarded(_ card: Card) -> Bool {
+        discarded.contains(card.id)
+    }
     
     private var undealtCards: [Card] {
-        viewModel.cards.filter { !isDealt($0) }
+        viewModel.cards.filter { !isDealt($0) && !$0.isMatched }
+    }
+    
+    private var discardedCards: [Card] {
+        viewModel.cards.filter { isDiscarded($0) }
     }
     
     private var deck: some View {
         ZStack {
+            deckTray
             ForEach(undealtCards) { card in
                 CardView(card, themeColor: viewModel.color, gradient: viewModel.gradient)
+                    .shadowed()
                     .matchedGeometryEffect(id: card.id, in: dealingNamespace)
                     .transition(.asymmetric(insertion: .identity, removal: .identity))
             }
@@ -116,6 +142,14 @@ struct EmojiMemoryGameView: View {
         }
     }
     
+    private func offset(for index: Int) -> CGFloat {
+        return CGFloat(index) * (.random(in: 0...10))/10
+    }
+    
+    private var deckTray: some View {
+        CardView(Card(content: "", id: ""), themeColor: .gray.opacity(0.1), gradient: false)
+    }
+    
     private func deal() {
         var delay: TimeInterval = 0
         for card in viewModel.cards {
@@ -123,6 +157,49 @@ struct EmojiMemoryGameView: View {
                 _ = dealt.insert(card.id)
             }
             delay += Constants.dealInterval
+        }
+    }
+    
+    // MARK: - Discarding cards
+    
+    private var discardPile: some View {
+        ZStack {
+            deckTray
+            ForEach(discardedCards) { card in
+                CardView(card, themeColor: viewModel.color, gradient: viewModel.gradient, isDiscarded: true)
+                    .shadowed()
+                    .matchedGeometryEffect(id: card.id, in: discardingNamespace,
+                                           isSource: !card.isFaceUp && card.isMatched ? true : false
+                    )
+                    .transition(.asymmetric(insertion: .identity, removal: .identity))
+            }
+        }
+        .frame(width: Constants.deckWidth, height: Constants.deckWidth / Constants.cardAspectRatio)
+    }
+    
+    private func checkForDiscards() {
+        // if there are 2 matched and showing within the dealt deck, discard them
+        let discards: [Card] = viewModel.cards.filter { $0.isFaceUp && $0.isMatched }
+        if discards.count > 0 {
+            discard(discards)
+        }
+    }
+    
+    private func discard(_ cards: [Card]) {
+        var delay: TimeInterval = 0
+        for card in cards {
+            withAnimation(Constants.dealAnimation.delay(delay)) {
+                _ = discarded.insert(card.id)
+            }
+            delay += Constants.dealInterval
+        }
+    }
+    
+    private func activeNamespace(for card: Card) -> Namespace.ID {
+        if card.isMatched {
+            return discardingNamespace
+        } else {
+            return dealingNamespace
         }
     }
     
