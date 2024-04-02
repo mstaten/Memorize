@@ -47,7 +47,7 @@ struct EmojiMemoryGameView: View {
     private var themeName: some View {
         Text("\(gameModel.theme.name)")
             .font(.title).bold()
-            .foregroundColor(gameModel.color)
+            .foregroundColor(gameModel.theme.colorColor)
     }
     
     private var gameControls: some View {
@@ -63,6 +63,7 @@ struct EmojiMemoryGameView: View {
         Button("New Game") {
             withAnimation {
                 gameModel.createNewGame()
+                // TODO: also reset cards, arrays
             }
         }
     }
@@ -82,7 +83,7 @@ struct EmojiMemoryGameView: View {
         ZStack {
             deckTray
             ForEach(undealtCards) { card in
-                CardView(card, themeColor: gameModel.color, gradient: gameModel.gradient)
+                CardView(card, themeColor: gameModel.theme.colorColor, gradient: gameModel.theme.gradient)
                     .shadowed()
                     .matchedGeometryEffect(id: card.id, in: dealingNamespace)
                     .transition(.asymmetric(insertion: .identity, removal: .identity))
@@ -97,7 +98,7 @@ struct EmojiMemoryGameView: View {
     private var dealtCardGrid: some View {
         AspectVGrid(gameModel.cards, aspectRatio: Constants.cardAspectRatio) { card in
             if isCardDealt(card) {
-                CardView(card, themeColor: gameModel.color, gradient: gameModel.gradient)
+                CardView(card, themeColor: gameModel.theme.colorColor, gradient: gameModel.theme.gradient)
                     .matchedGeometryEffect(id: card.id, in: activeNamespace(for: card),
                                            isSource: !card.isFaceUp && card.isMatched ? false : true
                     )
@@ -116,7 +117,7 @@ struct EmojiMemoryGameView: View {
         ZStack {
             deckTray
             ForEach(gameModel.cards.filter { isCardDiscarded($0) }) { card in
-                CardView(card, themeColor: gameModel.color, gradient: gameModel.gradient, isDiscarded: true)
+                CardView(card, themeColor: gameModel.theme.colorColor, gradient: gameModel.theme.gradient, isDiscarded: true)
                     .shadowed()
                     .matchedGeometryEffect(id: card.id, in: discardingNamespace,
                                            isSource: !card.isFaceUp && card.isMatched
@@ -199,6 +200,6 @@ struct EmojiMemoryGameView: View {
 
 struct EmojiMemoryGameView_Previews: PreviewProvider {
     static var previews: some View {
-        EmojiMemoryGameView(gameModel: EmojiMemoryGame())
+        EmojiMemoryGameView(gameModel: EmojiMemoryGame(theme: Theme.builtIns[0]))
     }
 }
