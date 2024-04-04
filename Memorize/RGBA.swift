@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct RGBA {
+struct RGBA: Codable {
     var red: Double
     var green: Double
     var blue: Double

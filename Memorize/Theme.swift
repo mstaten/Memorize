@@ -7,11 +7,12 @@
 
 import SwiftUI
 
-struct Theme {
+struct Theme: Identifiable, Codable {
     var name: String
     var rgba: RGBA
     var gradient: Bool = false
     var emojis: [String]
+    var id: UUID = .init()
     
     private var _numberOfPairs: Int = 2
     
@@ -38,7 +39,9 @@ struct Theme {
         self.gradient = gradient
         self.emojis = emojis
     }
-    
+}
+
+extension Theme {
     static var builtIns: [Theme] {[
         Theme(name: "Halloween", numberOfPairs: 4, rgba: .init(red: 1, green: 0.5, blue: 0, alpha: 1),
               emojis: ["👻", "🎃", "💀", "😈", "🕷️", "🕸️", "🍫", "🍬", "🧟", "🧙‍♀️", "👹", "☠️"]),
