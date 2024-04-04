@@ -47,7 +47,7 @@ struct EmojiMemoryGameView: View {
     private var themeName: some View {
         Text("\(gameModel.theme.name)")
             .font(.title).bold()
-            .foregroundColor(gameModel.theme.colorColor)
+            .foregroundColor(Color(rgba: gameModel.theme.rgba))
     }
     
     private var gameControls: some View {
@@ -63,7 +63,11 @@ struct EmojiMemoryGameView: View {
         Button("New Game") {
             withAnimation {
                 gameModel.createNewGame()
-                // TODO: also reset cards, arrays
+                
+                // reset state
+                dealtCards = .init()
+                discardedCards = .init()
+                lastScoreChange = (0, causedByCardId: "")
             }
         }
     }
@@ -83,7 +87,7 @@ struct EmojiMemoryGameView: View {
         ZStack {
             deckTray
             ForEach(undealtCards) { card in
-                CardView(card, themeColor: gameModel.theme.colorColor, gradient: gameModel.theme.gradient)
+                CardView(card, themeColor: Color(rgba: gameModel.theme.rgba), gradient: gameModel.theme.gradient)
                     .shadowed()
                     .matchedGeometryEffect(id: card.id, in: dealingNamespace)
                     .transition(.asymmetric(insertion: .identity, removal: .identity))
@@ -98,7 +102,7 @@ struct EmojiMemoryGameView: View {
     private var dealtCardGrid: some View {
         AspectVGrid(gameModel.cards, aspectRatio: Constants.cardAspectRatio) { card in
             if isCardDealt(card) {
-                CardView(card, themeColor: gameModel.theme.colorColor, gradient: gameModel.theme.gradient)
+                CardView(card, themeColor: Color(rgba: gameModel.theme.rgba), gradient: gameModel.theme.gradient)
                     .matchedGeometryEffect(id: card.id, in: activeNamespace(for: card),
                                            isSource: !card.isFaceUp && card.isMatched ? false : true
                     )
@@ -117,7 +121,7 @@ struct EmojiMemoryGameView: View {
         ZStack {
             deckTray
             ForEach(gameModel.cards.filter { isCardDiscarded($0) }) { card in
-                CardView(card, themeColor: gameModel.theme.colorColor, gradient: gameModel.theme.gradient, isDiscarded: true)
+                CardView(card, themeColor: Color(rgba: gameModel.theme.rgba), gradient: gameModel.theme.gradient, isDiscarded: true)
                     .shadowed()
                     .matchedGeometryEffect(id: card.id, in: discardingNamespace,
                                            isSource: !card.isFaceUp && card.isMatched
@@ -141,6 +145,11 @@ struct EmojiMemoryGameView: View {
     }
     
     private func chooseCard(_ card: Card) {
+        if card.isFaceUp {
+            // ignore tap
+            return
+        }
+        
         checkForDiscards()
         
         withAnimation {

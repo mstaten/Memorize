@@ -11,6 +11,7 @@
 		321BA2992AEB3CB700E1158F /* DeckShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321BA2982AEB3CB700E1158F /* DeckShadow.swift */; };
 		322A8AD22ABB5A9B004555C3 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322A8AD12ABB5A9B004555C3 /* Theme.swift */; };
 		323A857A2AABEE4200AE352B /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323A85792AABEE4100AE352B /* Common.swift */; };
+		323B7DBB2BBCBBF30003606A /* RGBA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323B7DBA2BBCBBF30003606A /* RGBA.swift */; };
 		325F916A2AD602C100EC2F11 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325F91692AD602C100EC2F11 /* CardView.swift */; };
 		325F916C2AD70B3100EC2F11 /* Pie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325F916B2AD70B3100EC2F11 /* Pie.swift */; };
 		325F91702AD721AF00EC2F11 /* Cardify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325F916F2AD721AF00EC2F11 /* Cardify.swift */; };
@@ -28,6 +29,7 @@
 		321BA2982AEB3CB700E1158F /* DeckShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckShadow.swift; sourceTree = "<group>"; };
 		322A8AD12ABB5A9B004555C3 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		323A85792AABEE4100AE352B /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
+		323B7DBA2BBCBBF30003606A /* RGBA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGBA.swift; sourceTree = "<group>"; };
 		325F91692AD602C100EC2F11 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		325F916B2AD70B3100EC2F11 /* Pie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pie.swift; sourceTree = "<group>"; };
 		325F916F2AD721AF00EC2F11 /* Cardify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cardify.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				325F916F2AD721AF00EC2F11 /* Cardify.swift */,
 				32F84F242AE02D50009DD5CD /* FlyingNumber.swift */,
 				321BA2982AEB3CB700E1158F /* DeckShadow.swift */,
+				323B7DBA2BBCBBF30003606A /* RGBA.swift */,
 			);
 			path = Memorize;
 			sourceTree = "<group>";
@@ -171,6 +174,7 @@
 				32046A182AC4D492005A34DF /* AspectVGrid.swift in Sources */,
 				322A8AD22ABB5A9B004555C3 /* Theme.swift in Sources */,
 				325F916C2AD70B3100EC2F11 /* Pie.swift in Sources */,
+				323B7DBB2BBCBBF30003606A /* RGBA.swift in Sources */,
 				323A857A2AABEE4200AE352B /* Common.swift in Sources */,
 				32F84F252AE02D51009DD5CD /* FlyingNumber.swift in Sources */,
 				321BA2992AEB3CB700E1158F /* DeckShadow.swift in Sources */,

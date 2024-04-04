@@ -9,7 +9,8 @@ import SwiftUI
 
 struct Theme {
     var name: String
-    var color: String
+    var rgba: RGBA
+    var gradient: Bool = false
     var emojis: [String]
     
     private var _numberOfPairs: Int = 2
@@ -30,52 +31,26 @@ struct Theme {
         return pairs
     }
     
-    // If a Theme specifies a color that we can't handle directly, use default case
-    var colorColor: Color {
-        switch color {
-        case "red":     return Color.red
-        case "orange":  return Color.orange
-        case "yellow":  return Color.yellow
-        case "green":   return Color.green
-        case "mint":    return Color.mint
-        case "teal":    return Color.teal
-        case "cyan":    return Color.cyan
-        case "blue":    return Color.blue
-        case "indigo":  return Color.indigo
-        case "purple":  return Color.purple
-        case "pink":    return Color.pink
-        case "brown":   return Color.brown
-        case "white":   return Color.white
-        case "gray":    return Color.gray
-        case "black":   return Color.black
-        default:        return Color.black
-        }
-    }
-    
-    // Support a gradient as a color, kind of
-    var gradient: Bool {
-        return color == "gradient"
-    }
-      
-    init(name: String, color: String, emojis: [String], numberOfPairs: Int = 2) {
+    init(name: String, numberOfPairs: Int = 2, rgba: RGBA, emojis: [String], gradient: Bool = false) {
         self.name = name
-        self.color = color
+        self._numberOfPairs = numberOfPairs
+        self.rgba = rgba
+        self.gradient = gradient
         self.emojis = emojis
-        self.numberOfPairs = numberOfPairs
     }
     
     static var builtIns: [Theme] {[
-        Theme(name: "Halloween", color: "orange",
+        Theme(name: "Halloween", numberOfPairs: 4, rgba: .init(red: 1, green: 0.5, blue: 0, alpha: 1),
               emojis: ["👻", "🎃", "💀", "😈", "🕷️", "🕸️", "🍫", "🍬", "🧟", "🧙‍♀️", "👹", "☠️"]),
-        Theme(name: "Flowers", color: "pink",
+        Theme(name: "Flowers", numberOfPairs: 4, rgba: .init(red: 1, green: 0, blue: 1, alpha: 1),
               emojis: ["🌼", "🌸", "💐", "🌹", "🌻", "🪻", "🌺", "🪷", "🌷", "🥀"]),
-        Theme(name: "Green", color: "green",
+        Theme(name: "Green", numberOfPairs: 4, rgba: .init(red: 0, green: 1, blue: 0, alpha: 1),
               emojis: ["💚", "🥝", "🐍", "🐸", "🦠", "🌱", "🌴", "🦖", "🍀", "📗", "🍐"]),
-        Theme(name: "Activities", color: "blue",
+        Theme(name: "Activities", numberOfPairs: 4, rgba: .init(red: 0, green: 0, blue: 1, alpha: 1),
               emojis: ["⚽️", "🏓", "🛼", "🎮", "🥍", "🎨"]),
-        Theme(name: "Moon Phases", color: "gradient",
+        Theme(name: "Moon Phases", numberOfPairs: 4, rgba: .init(red: 0.5, green: 0, blue: 0.5, alpha: 1),
               emojis: ["🌜", "🌝", "🌖", "🌗", "🌑", "🌚"]),
-        Theme(name: "Flags", color: "gradient",
-              emojis: ["🇺🇸", "🇨🇦", "🇩🇪", "🇬🇷", "🇨🇭"]),
+        Theme(name: "Flags", numberOfPairs: 4, rgba: .init(red: 0.5, green: 0, blue: 0.5, alpha: 1),
+              emojis: ["🇺🇸", "🇨🇦", "🇩🇪", "🇬🇷", "🇨🇭"], gradient: true),
     ]}
 }
