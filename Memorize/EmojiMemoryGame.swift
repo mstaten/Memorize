@@ -32,7 +32,7 @@ class EmojiMemoryGame: ObservableObject {
       
         return MemoryGame(numberOfPairsOfCards: theme.numberOfPairs) { pairIndex in
             if emojis.indices.contains(pairIndex) {
-                return emojis[pairIndex]
+                return String(emojis[pairIndex])
             } else {
                 // don't try to show more pairs than the theme has emoji to represent
                 return "⛔︎"

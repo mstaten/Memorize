@@ -14,6 +14,7 @@
 		323B7DBB2BBCBBF30003606A /* RGBA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323B7DBA2BBCBBF30003606A /* RGBA.swift */; };
 		323B7DBD2BBE2E580003606A /* ThemeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323B7DBC2BBE2E580003606A /* ThemeStore.swift */; };
 		323B7DBF2BBEF59E0003606A /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323B7DBE2BBEF59E0003606A /* ThemeManager.swift */; };
+		323B7DC12BC0E1EF0003606A /* ThemeEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323B7DC02BC0E1EF0003606A /* ThemeEditor.swift */; };
 		325F916A2AD602C100EC2F11 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325F91692AD602C100EC2F11 /* CardView.swift */; };
 		325F916C2AD70B3100EC2F11 /* Pie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325F916B2AD70B3100EC2F11 /* Pie.swift */; };
 		325F91702AD721AF00EC2F11 /* Cardify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325F916F2AD721AF00EC2F11 /* Cardify.swift */; };
@@ -34,6 +35,7 @@
 		323B7DBA2BBCBBF30003606A /* RGBA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGBA.swift; sourceTree = "<group>"; };
 		323B7DBC2BBE2E580003606A /* ThemeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeStore.swift; sourceTree = "<group>"; };
 		323B7DBE2BBEF59E0003606A /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		323B7DC02BC0E1EF0003606A /* ThemeEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeEditor.swift; sourceTree = "<group>"; };
 		325F91692AD602C100EC2F11 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		325F916B2AD70B3100EC2F11 /* Pie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pie.swift; sourceTree = "<group>"; };
 		325F916F2AD721AF00EC2F11 /* Cardify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cardify.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 				323B7DBA2BBCBBF30003606A /* RGBA.swift */,
 				323B7DBC2BBE2E580003606A /* ThemeStore.swift */,
 				323B7DBE2BBEF59E0003606A /* ThemeManager.swift */,
+				323B7DC02BC0E1EF0003606A /* ThemeEditor.swift */,
 			);
 			path = Memorize;
 			sourceTree = "<group>";
@@ -182,6 +185,7 @@
 				322A8AD22ABB5A9B004555C3 /* Theme.swift in Sources */,
 				325F916C2AD70B3100EC2F11 /* Pie.swift in Sources */,
 				323B7DBB2BBCBBF30003606A /* RGBA.swift in Sources */,
+				323B7DC12BC0E1EF0003606A /* ThemeEditor.swift in Sources */,
 				323A857A2AABEE4200AE352B /* Common.swift in Sources */,
 				32F84F252AE02D51009DD5CD /* FlyingNumber.swift in Sources */,
 				321BA2992AEB3CB700E1158F /* DeckShadow.swift in Sources */,
