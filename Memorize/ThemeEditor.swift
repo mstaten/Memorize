@@ -65,11 +65,16 @@ struct ThemeEditor: View {
     }
     
     private var pairStepper: some View {
-        Stepper(value: $pairValue, in: pairRange) {
-            Text("Pairs: \(pairValue), in range \(pairRange.description)")
-        }
-        .onChange(of: pairValue) { newValue in
-            theme.numberOfPairs = pairValue
+        Section {
+            Text("\(theme.emojis.count) cards")
+            Stepper(value: $pairValue, in: pairRange) {
+                Text("\(pairValue) pairs, in range \(pairRange.description)")
+            }
+            .onChange(of: pairValue) { newValue in
+                theme.numberOfPairs = pairValue
+            }
+        } header: {
+            Text("Cards")
         }
     }
     

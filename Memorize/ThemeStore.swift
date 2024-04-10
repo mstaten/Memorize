@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 // ViewModel
 
@@ -62,6 +63,23 @@ class ThemeStore: ObservableObject, Identifiable, Hashable {
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(name)
+    }
+    
+    // Adding Themes to the ThemeStore
+    
+    // prevent adding the same theme multiple times
+    func insert(_ theme: Theme, at insertionIndex: Int? = nil) {
+        let insertionIndex = boundsCheckedThemeIndex(insertionIndex ?? cursorIndex)
+        if let index = themes.firstIndex(where: { $0.id == theme.id }) {
+            themes.move(fromOffsets: IndexSet([index]), toOffset: insertionIndex)
+            themes.replaceSubrange(insertionIndex...insertionIndex, with: [theme])
+        } else {
+            themes.insert(theme, at: insertionIndex)
+        }
+    }
+    
+    func insert(name: String, rgba: RGBA, emojis: String, at index: Int? = nil) {
+        insert(Theme(name: name, rgba: rgba, emojis: emojis), at: index)
     }
     
 }
