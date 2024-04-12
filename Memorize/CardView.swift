@@ -75,7 +75,7 @@ struct CardView: View {
 
 extension Animation {
     static func spin(duration: TimeInterval) -> Animation {
-        return .linear(duration: duration).repeatForever(autoreverses: false)
+        return .linear(duration: duration)
     }
 }
 

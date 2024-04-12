@@ -48,6 +48,7 @@ struct EmojiMemoryGameView: View {
         Text("\(gameModel.theme.name)")
             .font(.title).bold()
             .foregroundColor(Color(rgba: gameModel.theme.rgba))
+            .multilineTextAlignment(.center)
     }
     
     private var gameControls: some View {
