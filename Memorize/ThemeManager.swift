@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ThemeManager: View {
     @ObservedObject var store: ThemeStore
-    @State var showCursorTheme: Bool = false
+    @State private var showThemeEditor: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -22,20 +22,16 @@ struct ThemeManager: View {
                 .onMove { indexSet, newOffset in
                     store.themes.move(fromOffsets: indexSet, toOffset: newOffset)
                 }
-                .onDelete { indexSet in
-                    withAnimation {
-                        store.themes.remove(atOffsets: indexSet)
-                    }
-                }
             }
             .navigationDestination(for: Theme.ID.self) { themeId in
                 if let index = store.themes.firstIndex(where: { $0.id == themeId }) {
-                    ThemeEditor(theme: $store.themes[index])
+                    let game: EmojiMemoryGame = .init(theme: store.themes[index])
+                    EmojiMemoryGameView(gameModel: game)
                 }
             }
-            .navigationDestination(isPresented: $showCursorTheme) {
-                // opens theme editor when creating & inserting a new theme
+            .sheet(isPresented: $showThemeEditor) {
                 ThemeEditor(theme: $store.themes[store.cursorIndex])
+//                    .font(nil)
             }
             .toolbar { insertThemeButton }
             .navigationTitle("\(store.name)")
@@ -45,7 +41,8 @@ struct ThemeManager: View {
     private var insertThemeButton: some View {
         Button {
             store.insert(name: "", rgba: RGBA(color: Color.blue), emojis: "")
-            showCursorTheme = true
+            // open theme editor when creating & inserting a new theme
+            showThemeEditor = true
         } label: {
             Image(systemName: "plus")
         }
@@ -61,6 +58,20 @@ struct ThemeManager: View {
             .frame(maxWidth: .infinity, alignment: Alignment.leading)
             
             card(for: theme)
+        }
+        .swipeActions {
+            Button(role: .destructive) {
+                if let index = store.themes.firstIndex(where: { $0.id == theme.id }) {
+                    store.themes.remove(at: index)
+                }
+            } label: {
+                Label("Delete", systemImage: "trash")
+            }
+            
+            Button { showThemeEditor = true } label: {
+                Label("Edit", systemImage: "pencil")
+            }
+            .tint(.orange)
         }
     }
     
