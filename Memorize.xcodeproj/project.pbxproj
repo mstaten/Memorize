@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		32046A182AC4D492005A34DF /* AspectVGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32046A172AC4D492005A34DF /* AspectVGrid.swift */; };
+		320D64E92BC8D4A100432C1C /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 320D64E82BC8D4A100432C1C /* README.md */; };
 		321BA2992AEB3CB700E1158F /* DeckShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321BA2982AEB3CB700E1158F /* DeckShadow.swift */; };
 		322A8AD22ABB5A9B004555C3 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322A8AD12ABB5A9B004555C3 /* Theme.swift */; };
 		323A857A2AABEE4200AE352B /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323A85792AABEE4100AE352B /* Common.swift */; };
@@ -30,6 +31,7 @@
 
 /* Begin PBXFileReference section */
 		32046A172AC4D492005A34DF /* AspectVGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectVGrid.swift; sourceTree = "<group>"; };
+		320D64E82BC8D4A100432C1C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		321BA2982AEB3CB700E1158F /* DeckShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckShadow.swift; sourceTree = "<group>"; };
 		322A8AD12ABB5A9B004555C3 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		323A85792AABEE4100AE352B /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 		32E07BAD2A8BD9CD005F6EB2 = {
 			isa = PBXGroup;
 			children = (
+				320D64E82BC8D4A100432C1C /* README.md */,
 				32E07BB82A8BD9CE005F6EB2 /* Memorize */,
 				32E07BB72A8BD9CE005F6EB2 /* Products */,
 			);
@@ -170,6 +173,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				320D64E92BC8D4A100432C1C /* README.md in Resources */,
 				32E07BC12A8BD9D1005F6EB2 /* Preview Assets.xcassets in Resources */,
 				32E07BBE2A8BD9D1005F6EB2 /* Assets.xcassets in Resources */,
 			);
