@@ -48,6 +48,12 @@ class ThemeStore: ObservableObject, Identifiable, Hashable {
         }
     }
     
+    func selectTheme(_ theme: Theme) {
+        if let index = themes.firstIndex(where: { $0.id == theme.id }) {
+            cursorIndex = index
+        }
+    }
+    
     private func boundsCheckedThemeIndex(_ index: Int) -> Int {
         // make sure index is always within the count's space
         var index = index % themes.count
@@ -65,7 +71,7 @@ class ThemeStore: ObservableObject, Identifiable, Hashable {
         hasher.combine(name)
     }
     
-    // Adding Themes to the ThemeStore
+    // MARK: - Adding Themes to the ThemeStore
     
     // prevent adding the same theme multiple times
     func insert(_ theme: Theme, at insertionIndex: Int? = nil) {

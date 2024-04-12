@@ -73,7 +73,10 @@ struct ThemeManager: View {
                 Label("Delete", systemImage: "trash")
             }
             
-            Button { showThemeEditor = true } label: {
+            Button {
+                store.selectTheme(theme)
+                showThemeEditor = true
+            } label: {
                 Label("Edit", systemImage: "pencil")
             }
             .tint(.orange)
