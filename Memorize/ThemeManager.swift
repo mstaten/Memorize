@@ -25,8 +25,13 @@ struct ThemeManager: View {
             }
             .navigationDestination(for: Theme.ID.self) { themeId in
                 if let index = store.themes.firstIndex(where: { $0.id == themeId }) {
-                    let game: EmojiMemoryGame = .init(theme: store.themes[index])
-                    EmojiMemoryGameView(gameModel: game)
+                    let theme = store.themes[index]
+                    if theme.emojis.count / 2 >= theme.numberOfPairs {
+                        EmojiMemoryGameView(gameModel: EmojiMemoryGame(theme: theme))
+                    } else {
+                        // handle case where there's not enough cards to play
+                        EmptyGameView()
+                    }
                 }
             }
             .sheet(isPresented: $showThemeEditor) {
